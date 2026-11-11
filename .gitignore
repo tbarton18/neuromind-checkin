@@ -1,0 +1,52 @@
+# Dependencies
+node_modules/
+
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Native build folders
+# Uncomment these if you use Expo Prebuild / Continuous Native Generation
+# and do not maintain native iOS or Android code yourself.
+# /ios
+# /android
+
+# Build outputs
+build/
+coverage/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+*.log
+
+# TypeScript
+*.tsbuildinfo
+
+# macOS
+.DS_Store
+
+# Editors
+.vscode/
+.idea/
+
+# Signing certificates and keys
+*.pem
+*.key
+*.jks
+*.keystore
+*.p8
+*.p12
+*.pfx
+*.mobileprovision
+
+# Miscellaneous
+*.orig.*
