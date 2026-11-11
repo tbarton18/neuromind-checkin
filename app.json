@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "NeuroCheckIn",
+    "name": "NeuroMind",
     "slug": "NeuroCheckIn",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "neurocheckin",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "light",
     "ios": {
       "icon": "./assets/expo.icon"
     },
@@ -28,15 +28,17 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 76
+          "backgroundColor": "#F7F6F0",
+          "image": "./assets/illustrations/face.png",
+          "imageWidth": 140
         }
-      ]
+      ],
+      "expo-sqlite"
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "backgroundColor": "#F7F6F0"
   }
 }
