@@ -23,11 +23,11 @@
 
 **Approved contrast pairs:** black on yellow, yellow on black, white on black, black on gray. Don't use white on yellow.
 
-**Voice:** warm, direct, evidence-based. No diagnoses and no alarmist language. This matters for the results copy.
+**Voice:** warm, direct, evidence-based. No diagnoses and no alarmist language. This matters for all on-screen copy.
 
 **Logo rules:** the logo always sits on a white, black or light-gray background. The isotipo is at least 24 px and the full logo at least 120 px wide. Don't recolor it or add effects.
 
-Deliverable: `src/constants/theme.ts` holds the tokens, plus shared components `<Title>`, `<Body>`, `<Label>`, `<PrimaryButton>` and `<Card>`.
+Deliverable (done in step 0): `src/constants/theme.ts` holds the tokens; shared components `AppText` (all text, by variant), `Button` (primary / dark / secondary / ghost), `Card` and `Screen`.
 
 ---
 
@@ -89,7 +89,7 @@ type Dimension = {
   id: 1|2|3|4|5|6; slug: string; title: string; subtitle: string;
   intro: string; instruction?: string;
   scaleLabels: { min: string; max: string } | 'faces';
-  illustration: ImageSource;
+  illustration: Illustration;
   questions: Question[];
   plan?: PlanContent;
 };
@@ -175,11 +175,11 @@ src/
       respuestas.tsx            # "Tus respuestas" recap
       plan.tsx                  # plan / recommendation
   components/
-    WellbeingWheel.tsx  ScoreSlider.tsx  DimensionCard.tsx
-    ProgressHeader.tsx  PrimaryButton.tsx  Typography.tsx
+    app-text.tsx  button.tsx  card.tsx  screen.tsx      # step 0
+    wellbeing-wheel.tsx  score-slider.tsx  dimension-card.tsx  progress-header.tsx
   content/dimensions.ts         # all Spanish copy + questions
   data/db.ts  repository.ts  scoring.ts
-  constants/theme.ts
+  constants/theme.ts  illustrations.ts
 assets/illustrations/           # logo, center face, 6 dimension faces, cycle graphic
                                 # v1: cropped from the PDF; swapped for hi-res files later (same filenames)
 ```
@@ -192,12 +192,12 @@ assets/illustrations/           # logo, center face, 6 dimension faces, cycle gr
 
 | Phase | Work | Done when |
 |---|---|---|
-| **0. Setup** | Clear the template (`reset-project`), add libraries, theme tokens, fonts, base components. Crop the logo, faces and cycle graphic from the PDF into `assets/illustrations/` | App boots with brand fonts, colors and the logo |
+| **0. Setup** | Remove the template demo files (`scripts/setup-step0.sh`), add libraries, theme tokens, fonts, base components. Crop the logo, faces and cycle graphic from the PDF into `assets/illustrations/` | App boots with brand fonts, colors and the logo |
 | **1. Onboarding** | Screens 1–3 with the confirmed copy; "Saltar" on later visits | Can navigate 1 → 2 → 3 → 4 |
 | **2. Hub** | Screen 4: "Ahora inicia tu recorrido", `WellbeingWheel` + dimension list, ✓ / Próximamente states | Wheel renders on small and large phones; tapping opens a dimension |
 | **3. Question engine** | Intro → one question at a time with a 0–10 slider → Enviar → next; Atrás; progress bar | D1 fully playable |
 | **4. Persistence** | SQLite schema, repository, save on Enviar, resume mid-dimension, monthly check-in creation, completed check-ins locked | Kill the app mid-question and it resumes there; set the clock forward 30 days and a new check-in starts while the old one is still intact |
-| **5. Content** | D1–D4 questions, summary screens, plan screens (PDF text or placeholders), D5/D6 "Próximamente" | All available content playable |
+| **5. Content** | D1–D4 questions, "Tus respuestas" recap screens, plan screens (PDF text or placeholders), D5/D6 "Próximamente" | All available content playable |
 | **6. Polish** | Haptics, transitions, accessibility (slider `accessibilityValue`, Spanish labels, 44 px tap targets, dynamic type) | Tested on iOS and Android |
 | **7. Ship** | EAS build → TestFlight / internal Play track | Testers can install |
 | **Later** | Login + `SyncService` + backend, "Mi historial" screen of past answers, monthly reminders (`expo-notifications`), hi-res asset swap, final plan content, D5/D6 questions | – |
@@ -218,3 +218,5 @@ assets/illustrations/           # logo, center face, 6 dimension faces, cycle gr
 - **An unfinished check-in carries over.** It stays open until completed. The 30-day clock only creates a new check-in after the previous one is completed. The `abandoned` status is not used in v1.
 
 **Step 0 status:** brand tokens (`src/constants/theme.ts`), fonts, base components (`AppText`, `Button`, `Card`, `Screen`), illustrations cropped from the PDF (`assets/illustrations/`), and app.json splash/light mode. `scripts/setup-step0.sh` removes the template demo files and installs the libraries.
+
+**Step 1 status:** Pantallas 1–3 (`bienvenida`, `beneficios`, `como-usar`) with the PDF copy in `src/content/onboarding.ts`. `index` sends first-time users to Pantalla 1 and returning users to the Mapa. "Saltar" appears only after the introduction has been seen once; the flag is stored with `expo-sqlite/kv-store`. `mapa.tsx` is a placeholder (the wheel image plus a "¿Cómo funciona NeuroMind?" link back to the intro) until step 2.
