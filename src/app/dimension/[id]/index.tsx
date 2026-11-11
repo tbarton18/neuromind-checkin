@@ -7,21 +7,44 @@ import { Card } from '@/components/card';
 import { NavFooter } from '@/components/nav-footer';
 import { Screen } from '@/components/screen';
 import { dimensionCards } from '@/constants/illustrations';
-import { colors, spacing } from '@/constants/theme';
+import { spacing } from '@/constants/theme';
 import { dimensionCopy, getDimension, isAvailable } from '@/content/dimensions';
+import { useCheckinAnswers } from '@/data/answers-store';
+import { firstUnanswered, useDimensionProgress } from '@/hooks/use-dimension-progress';
 
 export default function DimensionIntro() {
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
+  const { answers } = useCheckinAnswers();
+  const progress = useDimensionProgress();
   const dimension = getDimension(Number(id));
 
   if (!dimension) return <Redirect href="/mapa" />;
 
-  const available = isAvailable(dimension);
+  const status = progress[dimension.id];
+  const params = { id: String(dimension.id) };
+  const allAnswered = dimension.questions.every((q) => answers.has(q.id));
+  const showAnswers = status.kind === 'completed' || allAnswered;
 
-  const footer = available ? (
-    // STEP 2: "Comenzar" is disabled until the question screens arrive (step 3).
-    <NavFooter title={dimensionCopy.start} onPress={() => {}} disabled />
+  function primaryAction() {
+    if (!dimension) return;
+    if (showAnswers) {
+      router.push({ pathname: '/dimension/[id]/respuestas', params });
+    } else {
+      // Resume at the first unanswered question (question 1 when starting).
+      const q = String(firstUnanswered(dimension, answers));
+      router.push({ pathname: '/dimension/[id]/pregunta/[q]', params: { ...params, q } });
+    }
+  }
+
+  const primaryTitle = showAnswers
+    ? dimensionCopy.viewAnswers
+    : status.kind === 'inProgress'
+      ? dimensionCopy.resume
+      : dimensionCopy.start;
+
+  const footer = isAvailable(dimension) ? (
+    <NavFooter title={primaryTitle} onPress={primaryAction} />
   ) : (
     <NavFooter title={dimensionCopy.backToMap} onPress={() => router.back()} showBack={false} />
   );
@@ -40,7 +63,7 @@ export default function DimensionIntro() {
         accessibilityLabel={`${dimension.title}. ${dimension.intro}`}
       />
 
-      {available ? (
+      {isAvailable(dimension) ? (
         <>
           {dimension.subtitle ? (
             <AppText variant="heading" align="center">
@@ -55,9 +78,6 @@ export default function DimensionIntro() {
           ) : null}
           <AppText variant="secondary" align="center">
             {dimensionCopy.questionCount(dimension.questions.length)}
-          </AppText>
-          <AppText variant="caption" align="center" style={{ color: colors.textMuted, marginTop: spacing.xs }}>
-            {dimensionCopy.questionsArriving}
           </AppText>
         </>
       ) : (

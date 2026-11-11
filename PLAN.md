@@ -223,3 +223,10 @@ assets/illustrations/           # logo, center face, 6 dimension faces, cycle gr
 **Step 1 status:** Pantallas 1–3 (`bienvenida`, `beneficios`, `como-usar`) with the PDF copy in `src/content/onboarding.ts`. `index` sends first-time users to Pantalla 1 and returning users to the Mapa. "Saltar" appears only after the introduction has been seen once; the flag is stored with `expo-sqlite/kv-store`. `mapa.tsx` is a placeholder (the wheel image plus a "¿Cómo funciona NeuroMind?" link back to the intro) until step 2.
 
 **Step 2 status:** Mapa hub with the interactive `WellbeingWheel` (react-native-svg ring, center face, 6 tappable dimensions with status badges) and the `DimensionRow` list. Dimension content + all 24 PDF questions live in `src/content/dimensions.ts`. `dimension/[id]` shows the intro card; "Comenzar" is disabled until step 3; D5/D6 show "Próximamente". Status comes from `useDimensionProgress()`, which returns "Pendiente" for everything until step 4 connects it to saved answers. Type check and an iOS export bundle both pass.
+
+**Step 3 status:** Question flow working end to end, with answers kept in memory (`src/data/answers-store.ts`) until step 4 adds device storage behind the same functions.
+- `dimension/[id]` intro button reads "Comenzar", "Continuar" (resumes at the first unanswered question) or "Ver mis respuestas".
+- `dimension/[id]/pregunta/[q]` shows one question at a time: progress bar, `ScoreSlider` (NeuroMind face as the thumb, 0–10 under each stop, snap + haptic tick per number, tap-to-jump, screen-reader adjustable), and "Enviar", disabled until answered. "Atrás" returns to the previous question with its answer filled in.
+- `dimension/[id]/respuestas` is the "Tus respuestas" recap. "Atrás" lets the person change an answer; "Finalizar" marks the dimension completed (read-only) and returns to the Mapa.
+- The Mapa badges and pills update live (Pendiente → En progreso n/6 → Completado).
+- Slider built custom (Gesture Handler v3 `usePanGesture` + Reanimated 4) because `@expo/ui` Slider has no color or thumb customization.
