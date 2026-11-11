@@ -74,6 +74,10 @@ export const type = {
     color: colors.textSecondary,
   },
   button: { fontFamily: fonts.sansBold, fontSize: 17, lineHeight: 22, color: colors.text },
+  /** Dimension names around the wheel — small, two lines. */
+  wheelLabel: { fontFamily: fonts.sansMedium, fontSize: 13, lineHeight: 16, color: colors.text },
+  /** Status pills and number badges. */
+  chip: { fontFamily: fonts.sansBold, fontSize: 12, lineHeight: 16, color: colors.text },
 } as const satisfies Record<string, TextStyle>;
 
 export type TypeVariant = keyof typeof type;

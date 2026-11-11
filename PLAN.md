@@ -37,7 +37,7 @@ Screen boundaries confirmed by the product owner.
 
 | # | Screen | Content (from the PDF) |
 |---|---|---|
-| 1 | **Bienvenida** | Logo, "NeuroMind te ayuda a conocerte para sentirte mejor", "Descarga NeuroMind y comienza hoy a explorar tu Mapa de Bienestar", the "Aquí podrás explorar tu Mapa de Bienestar NeuroMind…" paragraph, and the quote "Tu bienestar comienza cuando te das un espacio para escucharte". Button: **Continuar** |
+| 1 | **Bienvenida** | Logo, "NeuroMind te ayuda a conocerte para sentirte mejor", the "Aquí podrás explorar tu Mapa de Bienestar NeuroMind…" paragraph, and the quote "Tu bienestar comienza cuando te das un espacio para escucharte". Button: **Continuar** |
 | 2 | **Beneficios** | "¿Qué beneficios tiene explorar tu Mapa de Bienestar?", "Conocer tu mapa de bienestar te permitirá:" and the 6 bullets (Reconocer, Tomar conciencia, Identificar, Reflexionar, Orientar, Hacer seguimiento), with the lead verb in bold as in the PDF. Button: **Continuar** |
 | 3 | **¿Cómo usar NeuroMind?** | "Detente · Conecta · Descubre", the "El objetivo no es obtener un resultado bueno o malo…" copy, and the 6-step cycle graphic (Exploración → Identificación de necesidades → Acciones de autocuidado → Seguimiento → Reevaluación → Evolución y efectividad). Button: **Continuar** |
 | 4 | **Mapa de Bienestar (hub)** | Heading "Ahora inicia tu recorrido por NeuroMind". Below it, the circular wheel with the NeuroMind face in the center and the 6 numbered dimensions around it, then the dimension list. Tapping a dimension starts its flow. Completed dimensions show ✓. |
@@ -215,6 +215,7 @@ assets/illustrations/           # logo, center face, 6 dimension faces, cycle gr
 - PDF images for now; hi-res versions will replace them under the same file names.
 - **No scores or averages shown to the user.** The dimension "summary" screen becomes **"Tus respuestas"**: a read-only list of the answers just submitted (question + value). Averages may still be computed internally for future reporting, but they are not displayed.
 - **Dimensions can be done in any order** from the wheel.
+- Pantalla 1 drops the PDF line "Descarga NeuroMind y comienza hoy…" (it reads oddly inside the app).
 - **An unfinished check-in carries over.** It stays open until completed. The 30-day clock only creates a new check-in after the previous one is completed. The `abandoned` status is not used in v1.
 
 **Step 0 status:** brand tokens (`src/constants/theme.ts`), fonts, base components (`AppText`, `Button`, `Card`, `Screen`), illustrations cropped from the PDF (`assets/illustrations/`), and app.json splash/light mode. `scripts/setup-step0.sh` removes the template demo files and installs the libraries.

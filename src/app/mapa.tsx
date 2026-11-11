@@ -1,19 +1,27 @@
-/**
- * Pantalla 4 — Mapa de Bienestar.
- * PLACEHOLDER for step 1: shows the wheel image from the PDF. Step 2 replaces
- * it with the interactive wheel and the dimension list.
- */
-import { Image } from 'expo-image';
+/** Pantalla 4 — Mapa de Bienestar (hub). */
 import { useRouter } from 'expo-router';
+import { useWindowDimensions, View } from 'react-native';
 
 import { AppText } from '@/components/app-text';
 import { Button } from '@/components/button';
+import { DimensionRow } from '@/components/dimension-row';
 import { Screen } from '@/components/screen';
-import { illustrations } from '@/constants/illustrations';
+import { WellbeingWheel } from '@/components/wellbeing-wheel';
+import { layout, spacing } from '@/constants/theme';
+import { dimensions, type DimensionId } from '@/content/dimensions';
 import { common, mapa as copy } from '@/content/onboarding';
+import { useDimensionProgress } from '@/hooks/use-dimension-progress';
 
 export default function Mapa() {
   const router = useRouter();
+  const { width } = useWindowDimensions();
+  const progress = useDimensionProgress();
+
+  const wheelSize = Math.min(width - layout.screenPadding * 2, 380);
+
+  function open(id: DimensionId) {
+    router.push({ pathname: '/dimension/[id]', params: { id: String(id) } });
+  }
 
   return (
     <Screen>
@@ -21,16 +29,13 @@ export default function Mapa() {
         {copy.title}
       </AppText>
 
-      <Image
-        source={illustrations.wheel}
-        style={{ width: '100%', aspectRatio: 1 }}
-        contentFit="contain"
-        accessibilityLabel="Mapa de Bienestar NeuroMind con seis dimensiones"
-      />
+      <WellbeingWheel size={wheelSize} progress={progress} onSelect={open} />
 
-      <AppText variant="caption" align="center">
-        Las dimensiones serán interactivas en el siguiente paso.
-      </AppText>
+      <View style={{ gap: spacing.sm, marginTop: spacing.sm }}>
+        {dimensions.map((d) => (
+          <DimensionRow key={d.id} dimension={d} status={progress[d.id]} onPress={() => open(d.id)} />
+        ))}
+      </View>
 
       <Button title={common.howItWorks} variant="ghost" onPress={() => router.push('/bienvenida')} />
     </Screen>
