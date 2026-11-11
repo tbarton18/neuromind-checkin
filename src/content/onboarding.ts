@@ -8,7 +8,6 @@ export type TextPart = { text: string; strong?: boolean };
 
 export const bienvenida = {
   tagline: '“NeuroMind te ayuda a conocerte para sentirte mejor”',
-  invitation: 'Descarga NeuroMind y comienza hoy a explorar tu Mapa de Bienestar.',
   body:
     'Aquí podrás explorar tu “Mapa de Bienestar NeuroMind” a través de la exploración de estas seis ' +
     'dimensiones que podrán reflejar diferentes aspectos de tu salud mental y vida cotidiana. Este ' +

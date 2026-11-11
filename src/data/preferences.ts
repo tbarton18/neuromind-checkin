@@ -18,3 +18,8 @@ export function markOnboardingCompleted(): void {
     Storage.setItemSync(KEYS.onboardingCompleted, new Date().toISOString());
   }
 }
+
+/** Forget that onboarding was seen (used by the dev-only reset on the Mapa). */
+export function resetOnboarding(): void {
+  Storage.removeItemSync(KEYS.onboardingCompleted);
+}

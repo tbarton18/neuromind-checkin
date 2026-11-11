@@ -11,27 +11,29 @@ type Props = {
   title: string;
   onPress: () => void;
   disabled?: boolean;
-  /** Override what "Atrás" does. Defaults to going to the previous screen. */
+  /**
+   * Whether to show "Atrás". Each screen decides this explicitly: asking the
+   * navigator while a new screen is first drawn can give a stale "no".
+   */
+  showBack?: boolean;
+  /** Override what "Atrás" does. Defaults to the previous screen (or the Mapa). */
   onBack?: () => void;
-  /** Force-hide "Atrás" (it is also hidden when there is no previous screen). */
-  hideBack?: boolean;
 };
 
-/** Bottom bar: "Atrás" (when there's somewhere to go back to) + the main action. */
-export function NavFooter({ title, onPress, disabled, onBack, hideBack }: Props) {
+/** Bottom bar: optional "Atrás" + the main action. */
+export function NavFooter({ title, onPress, disabled, showBack = true, onBack }: Props) {
   const router = useRouter();
-  const showBack = !hideBack && (onBack != null || router.canGoBack());
+
+  function goBack() {
+    if (onBack) return onBack();
+    // Checked on tap (not during render), so the answer is current.
+    if (router.canGoBack()) router.back();
+    else router.replace('/mapa');
+  }
 
   return (
     <View style={{ flexDirection: 'row', gap: spacing.sm }}>
-      {showBack ? (
-        <Button
-          title={BACK_LABEL}
-          variant="secondary"
-          onPress={onBack ?? (() => router.back())}
-          style={{ flex: 1 }}
-        />
-      ) : null}
+      {showBack ? <Button title={BACK_LABEL} variant="secondary" onPress={goBack} style={{ flex: 1 }} /> : null}
       <Button title={title} onPress={onPress} disabled={disabled} style={{ flex: showBack ? 2 : 1 }} />
     </View>
   );

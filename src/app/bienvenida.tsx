@@ -14,10 +14,18 @@ import { ONBOARDING_STEPS, useOnboarding } from '@/hooks/use-onboarding';
 
 export default function Bienvenida() {
   const router = useRouter();
-  const { skip } = useOnboarding();
+  const { skip, canSkip } = useOnboarding();
 
   return (
-    <Screen footer={<NavFooter title={copy.cta} onPress={() => router.push('/beneficios')} />}>
+    <Screen
+      footer={
+        <NavFooter
+          title={copy.cta}
+          onPress={() => router.push('/beneficios')}
+          // First launch: nothing behind Pantalla 1. Opened from the Mapa: back returns there.
+          showBack={canSkip}
+        />
+      }>
       <OnboardingHeader step={1} total={ONBOARDING_STEPS} onSkip={skip} />
 
       <Image

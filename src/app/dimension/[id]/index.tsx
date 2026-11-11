@@ -23,7 +23,7 @@ export default function DimensionIntro() {
     // STEP 2: "Comenzar" is disabled until the question screens arrive (step 3).
     <NavFooter title={dimensionCopy.start} onPress={() => {}} disabled />
   ) : (
-    <NavFooter title={dimensionCopy.backToMap} onPress={() => router.back()} hideBack />
+    <NavFooter title={dimensionCopy.backToMap} onPress={() => router.back()} showBack={false} />
   );
 
   return (

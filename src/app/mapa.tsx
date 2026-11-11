@@ -10,6 +10,7 @@ import { WellbeingWheel } from '@/components/wellbeing-wheel';
 import { layout, spacing } from '@/constants/theme';
 import { dimensions, type DimensionId } from '@/content/dimensions';
 import { common, mapa as copy } from '@/content/onboarding';
+import { resetOnboarding } from '@/data/preferences';
 import { useDimensionProgress } from '@/hooks/use-dimension-progress';
 
 export default function Mapa() {
@@ -38,6 +39,18 @@ export default function Mapa() {
       </View>
 
       <Button title={common.howItWorks} variant="ghost" onPress={() => router.push('/bienvenida')} />
+
+      {__DEV__ ? (
+        // Development only: never shown in a release build.
+        <Button
+          title="Reiniciar introducción (solo desarrollo)"
+          variant="secondary"
+          onPress={() => {
+            resetOnboarding();
+            router.replace('/');
+          }}
+        />
+      ) : null}
     </Screen>
   );
 }
