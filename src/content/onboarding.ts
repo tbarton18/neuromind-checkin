@@ -75,9 +75,22 @@ export const comoUsar: {
   cta: 'Continuar',
 };
 
+const MONTHS = [
+  'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+  'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre',
+];
+
 export const mapa = {
   title: 'Ahora inicia tu recorrido por NeuroMind',
-} as const;
+  /** "2026-11" → "Check-in de noviembre 2026" */
+  period: (period: string) => {
+    const [y, m] = period.split('-').map(Number);
+    return `Check-in de ${MONTHS[m - 1] ?? ''} ${y}`;
+  },
+  completedTitle: '¡Completaste tu check-in!',
+  completedBody: (date: Date) =>
+    `Gracias por darte este espacio. Tu próximo check-in estará disponible a partir del ${date.getDate()} de ${MONTHS[date.getMonth()]}.`,
+};
 
 export const common = {
   skip: 'Saltar',

@@ -4,19 +4,23 @@ import { useWindowDimensions, View } from 'react-native';
 
 import { AppText } from '@/components/app-text';
 import { Button } from '@/components/button';
+import { Card } from '@/components/card';
+import { DevTools } from '@/components/dev-tools';
 import { DimensionRow } from '@/components/dimension-row';
 import { Screen } from '@/components/screen';
 import { WellbeingWheel } from '@/components/wellbeing-wheel';
 import { layout, spacing } from '@/constants/theme';
 import { dimensions, type DimensionId } from '@/content/dimensions';
 import { common, mapa as copy } from '@/content/onboarding';
-import { resetOnboarding } from '@/data/preferences';
+import { useCheckinAnswers } from '@/data/answers-store';
+import { nextCheckinDate } from '@/data/checkins';
 import { useDimensionProgress } from '@/hooks/use-dimension-progress';
 
 export default function Mapa() {
   const router = useRouter();
   const { width } = useWindowDimensions();
   const progress = useDimensionProgress();
+  const { checkin } = useCheckinAnswers();
 
   const wheelSize = Math.min(width - layout.screenPadding * 2, 380);
 
@@ -29,6 +33,18 @@ export default function Mapa() {
       <AppText variant="title" align="center" accessibilityRole="header">
         {copy.title}
       </AppText>
+      <AppText variant="label" align="center">
+        {copy.period(checkin.period)}
+      </AppText>
+
+      {checkin.status === 'completed' ? (
+        <Card variant="soft" style={{ alignItems: 'center' }}>
+          <AppText variant="heading" align="center">
+            {copy.completedTitle}
+          </AppText>
+          <AppText align="center">{copy.completedBody(nextCheckinDate(checkin))}</AppText>
+        </Card>
+      ) : null}
 
       <WellbeingWheel size={wheelSize} progress={progress} onSelect={open} />
 
@@ -40,17 +56,7 @@ export default function Mapa() {
 
       <Button title={common.howItWorks} variant="ghost" onPress={() => router.push('/bienvenida')} />
 
-      {__DEV__ ? (
-        // Development only: never shown in a release build.
-        <Button
-          title="Reiniciar introducción (solo desarrollo)"
-          variant="secondary"
-          onPress={() => {
-            resetOnboarding();
-            router.replace('/');
-          }}
-        />
-      ) : null}
+      <DevTools />
     </Screen>
   );
 }
