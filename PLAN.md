@@ -245,3 +245,11 @@ assets/illustrations/           # logo, center face, 6 dimension faces, cycle gr
   - "Simular mes siguiente" (moves check-ins 31 days back)
   - "Reiniciar introducción"
 - The SQL was verified against SQLite 3.53: UUID v4, upsert, 0–10 constraint, first completion kept, cascade delete.
+
+**Step 5 status:** Plan screens (`dimension/[id]/plan`), with content in `src/content/plans.ts` as simple blocks (heading, paragraph, quote, bullets, callout, numbered option + "Opción NeuroMind", references). All are marked "Contenido en preparación".
+- D1 shows the PDF plan card, plus the "Pausas NeuroMind / ¡Dame un respiro!" text and its references.
+- D2 is a placeholder.
+- D3 shows the PDF card, then a placeholder.
+- D4 shows the full "Plan de reconexión social" with 3 options.
+
+Flow: "Finalizar" on "Tus respuestas" now marks the dimension complete and opens its plan. "Volver al mapa" returns to the hub. A completed dimension's "Tus respuestas" offers "Ver mi plan".

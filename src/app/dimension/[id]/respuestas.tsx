@@ -8,6 +8,7 @@ import { NavFooter } from '@/components/nav-footer';
 import { Screen } from '@/components/screen';
 import { colors, radius, spacing } from '@/constants/theme';
 import { dimensionCopy, getDimension } from '@/content/dimensions';
+import { getPlan, planCopy } from '@/content/plans';
 import { completeDimension, useCheckinAnswers } from '@/data/answers-store';
 
 export default function Respuestas() {
@@ -21,17 +22,29 @@ export default function Respuestas() {
   const isCompleted = completed.has(dimension.id);
   const copy = dimensionCopy.answers;
 
+  const hasPlan = getPlan(dimension.id) != null;
+  const params = { id: String(dimension.id) };
+
+  function openPlan() {
+    router.push({ pathname: '/dimension/[id]/plan', params });
+  }
+
   function finish() {
     if (!dimension) return;
     completeDimension(dimension.id);
-    router.dismissTo('/mapa');
+    if (hasPlan) openPlan();
+    else router.dismissTo('/mapa');
   }
 
   return (
     <Screen
       footer={
         isCompleted ? (
-          <NavFooter title={dimensionCopy.backToMap} onPress={() => router.dismissTo('/mapa')} showBack={false} />
+          hasPlan ? (
+            <NavFooter title={planCopy.viewPlan} onPress={openPlan} />
+          ) : (
+            <NavFooter title={dimensionCopy.backToMap} onPress={() => router.dismissTo('/mapa')} />
+          )
         ) : (
           // "Atrás" returns to the last question so an answer can still be changed.
           <NavFooter title={dimensionCopy.finish} onPress={finish} />
