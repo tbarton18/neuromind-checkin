@@ -85,11 +85,16 @@ export default function Pregunta() {
             }}>
             {draft ?? '–'}
           </AppText>
-          {draft == null ? (
-            <AppText variant="secondary" align="center">
-              {dimensionCopy.sliderHint}
-            </AppText>
-          ) : null}
+          {/* Always rendered so it keeps its space: hiding it (not removing it)
+              keeps the slider from shifting up once a value is chosen. */}
+          <AppText
+            variant="secondary"
+            align="center"
+            style={{ opacity: draft == null ? 1 : 0 }}
+            accessibilityElementsHidden={draft != null}
+            importantForAccessibility={draft == null ? 'auto' : 'no-hide-descendants'}>
+            {dimensionCopy.sliderHint}
+          </AppText>
         </View>
 
         <ScoreSlider
