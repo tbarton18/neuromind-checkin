@@ -1,7 +1,7 @@
 /** One question at a time: 0–10 slider, "Enviar" saves and moves on. */
 import { Redirect, useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
-import { View } from 'react-native';
+import { useWindowDimensions, View } from 'react-native';
 
 import { AppText } from '@/components/app-text';
 import { NavFooter } from '@/components/nav-footer';
@@ -16,6 +16,7 @@ export default function Pregunta() {
   const router = useRouter();
   const { id, q } = useLocalSearchParams<{ id: string; q: string }>();
   const { answers, completed } = useCheckinAnswers();
+  const { height } = useWindowDimensions();
 
   const dimension = getDimension(Number(id));
   const number = Number(q);
@@ -49,10 +50,23 @@ export default function Pregunta() {
   return (
     <Screen
       scroll={false}
-      footer={<NavFooter title={dimensionCopy.submit} onPress={submit} disabled={draft == null} />}>
+      footer={
+        <NavFooter
+          title={dimensionCopy.submit}
+          onPress={submit}
+          disabled={draft == null}
+          disabledHint={dimensionCopy.submitDisabledHint}
+        />
+      }>
       <QuestionHeader dimension={dimension} number={number} total={total} />
 
-      <AppText variant="question" accessibilityRole="header" style={{ marginTop: spacing.md }}>
+      <AppText
+        variant="question"
+        accessibilityRole="header"
+        // This screen doesn't scroll (so dragging the slider never fights a scroll):
+        // allow larger text, but not so large that the slider is pushed off screen.
+        maxFontSizeMultiplier={1.6}
+        style={{ marginTop: spacing.md }}>
         {question.text}
       </AppText>
 
@@ -62,7 +76,13 @@ export default function Pregunta() {
             variant="display"
             align="center"
             accessible={false}
-            style={{ fontSize: 64, lineHeight: 70, color: draft == null ? colors.textMuted : colors.text }}>
+            maxFontSizeMultiplier={1.1}
+            // Smaller readout on short phones (e.g. iPhone SE) to leave room for the question.
+            style={{
+              fontSize: height < 700 ? 48 : 64,
+              lineHeight: height < 700 ? 54 : 70,
+              color: draft == null ? colors.textMuted : colors.text,
+            }}>
             {draft ?? '–'}
           </AppText>
           {draft == null ? (

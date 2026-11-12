@@ -127,10 +127,10 @@ export function ScoreSlider({ value, onChange, minLabel, maxLabel, accessibility
       onAccessibilityAction={onAccessibilityAction}
       style={{ gap: spacing.sm }}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        <AppText variant="subtitle" accessible={false}>
+        <AppText variant="subtitle" accessible={false} maxFontSizeMultiplier={1.3}>
           {minLabel}
         </AppText>
-        <AppText variant="subtitle" accessible={false}>
+        <AppText variant="subtitle" accessible={false} maxFontSizeMultiplier={1.3}>
           {maxLabel}
         </AppText>
       </View>
@@ -195,6 +195,8 @@ export function ScoreSlider({ value, onChange, minLabel, maxLabel, accessibility
                 key={n}
                 variant={n === value ? 'chip' : 'caption'}
                 align="center"
+                // Fixed 24pt slots under each stop: cap growth so 10 still fits.
+                maxFontSizeMultiplier={1.2}
                 style={{
                   position: 'absolute',
                   width: 24,

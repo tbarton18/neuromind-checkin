@@ -177,6 +177,7 @@ export const dimensionCopy = {
   finish: 'Finalizar',
   backToMap: 'Volver al mapa',
   sliderHint: 'Desliza la cara de NeuroMind o toca la línea para responder.',
+  submitDisabledHint: 'Primero elige un valor de 0 a 10 con el control deslizante.',
   faces: { min: '😟', max: '😄' },
   answers: {
     title: 'Tus respuestas',

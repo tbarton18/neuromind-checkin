@@ -11,6 +11,8 @@ type Props = {
   title: string;
   onPress: () => void;
   disabled?: boolean;
+  /** Read by screen readers when the main action is disabled (explains why). */
+  disabledHint?: string;
   /**
    * Whether to show "Atrás". Each screen decides this explicitly: asking the
    * navigator while a new screen is first drawn can give a stale "no".
@@ -21,7 +23,7 @@ type Props = {
 };
 
 /** Bottom bar: optional "Atrás" + the main action. */
-export function NavFooter({ title, onPress, disabled, showBack = true, onBack }: Props) {
+export function NavFooter({ title, onPress, disabled, disabledHint, showBack = true, onBack }: Props) {
   const router = useRouter();
 
   function goBack() {
@@ -34,7 +36,13 @@ export function NavFooter({ title, onPress, disabled, showBack = true, onBack }:
   return (
     <View style={{ flexDirection: 'row', gap: spacing.sm }}>
       {showBack ? <Button title={BACK_LABEL} variant="secondary" onPress={goBack} style={{ flex: 1 }} /> : null}
-      <Button title={title} onPress={onPress} disabled={disabled} style={{ flex: showBack ? 2 : 1 }} />
+      <Button
+        title={title}
+        onPress={onPress}
+        disabled={disabled}
+        accessibilityHint={disabled ? disabledHint : undefined}
+        style={{ flex: showBack ? 2 : 1 }}
+      />
     </View>
   );
 }

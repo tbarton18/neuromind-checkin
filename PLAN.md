@@ -253,3 +253,11 @@ assets/illustrations/           # logo, center face, 6 dimension faces, cycle gr
 - D4 shows the full "Plan de reconexión social" with 3 options.
 
 Flow: "Finalizar" on "Tus respuestas" now marks the dimension complete and opens its plan. "Volver al mapa" returns to the hub. A completed dimension's "Tus respuestas" offers "Ver mi plan".
+
+**Step 6 status (polish):**
+- **Press feedback.** `usePressScale` shrinks a tapped element to 97% (wheel nodes 94%, list rows 98%) on press-in, using a 120ms Reanimated CSS transition on the UI thread. It's off when Reduce Motion is on. Applied to `Button`, `DimensionRow` and the wheel nodes.
+- **Haptics.** The slider already ticks at each number. A success haptic now fires on "Finalizar"; nothing else vibrates.
+- **Large text.** Text that sits in fixed geometry has a size cap: wheel labels ×1.15 with shrink-to-fit, number badges ×1.2, slider ticks ×1.2, button labels ×1.4. The question text is allowed up to ×1.6 (the question screen doesn't scroll, so dragging never fights a scroll). The answer readout is smaller on short phones.
+- **Screen readers.** A disabled "Enviar" explains why.
+- iOS and Android bundles both build.
+- **Not done:** the app icon is still Expo's. It waits for the hi-res NeuroMind artwork, because the PDF face is too small to scale up to 1024 px cleanly.

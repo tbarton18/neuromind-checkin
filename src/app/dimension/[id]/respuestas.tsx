@@ -1,4 +1,5 @@
 /** "Tus respuestas": read-only recap of the answers for one dimension. */
+import * as Haptics from 'expo-haptics';
 import { Redirect, useLocalSearchParams, useRouter } from 'expo-router';
 import { View } from 'react-native';
 
@@ -32,6 +33,8 @@ export default function Respuestas() {
   function finish() {
     if (!dimension) return;
     completeDimension(dimension.id);
+    // One success haptic for finishing a dimension (the visual change is the new screen).
+    Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     if (hasPlan) openPlan();
     else router.dismissTo('/mapa');
   }

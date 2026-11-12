@@ -47,7 +47,7 @@ export function NumberBadge({ n, status, size = 26 }: { n: number; status: Dimen
         alignItems: 'center',
         justifyContent: 'center',
       }}>
-      <AppText variant="chip" style={{ color: c.fg }}>
+      <AppText variant="chip" maxFontSizeMultiplier={1.2} style={{ color: c.fg }}>
         {status.kind === 'completed' ? '✓' : n}
       </AppText>
     </View>

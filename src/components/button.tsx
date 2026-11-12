@@ -1,7 +1,11 @@
 import { ActivityIndicator, Pressable, type StyleProp, type ViewStyle } from 'react-native';
+import Animated from 'react-native-reanimated';
 
 import { AppText } from '@/components/app-text';
 import { colors, layout, radius, spacing } from '@/constants/theme';
+import { usePressScale } from '@/hooks/use-press-scale';
+
+const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 const variants = {
   /** Black text on yellow — main action on every screen (Continuar, Enviar). */
@@ -37,16 +41,19 @@ export function Button({
 }: ButtonProps) {
   const v = variants[variant];
   const inactive = disabled || loading;
+  const { pressed, pressHandlers, scaleStyle } = usePressScale();
+  const filled = variant === 'primary' || variant === 'dark';
 
   return (
-    <Pressable
+    <AnimatedPressable
       accessibilityRole="button"
       accessibilityLabel={title}
       accessibilityHint={accessibilityHint}
       accessibilityState={{ disabled: inactive, busy: loading }}
       disabled={inactive}
       onPress={onPress}
-      style={({ pressed }) => [
+      {...pressHandlers}
+      style={[
         {
           minHeight: variant === 'ghost' ? layout.minTapTarget : layout.buttonHeight,
           paddingHorizontal: spacing.lg,
@@ -54,24 +61,24 @@ export function Button({
           borderCurve: 'continuous',
           borderWidth: variant === 'secondary' ? 1.5 : 0,
           borderColor: disabled ? colors.disabled : v.border,
-          backgroundColor:
-            disabled && (variant === 'primary' || variant === 'dark')
-              ? colors.disabled
-              : pressed
-                ? v.bgPressed
-                : v.bg,
+          backgroundColor: disabled && filled ? colors.disabled : pressed ? v.bgPressed : v.bg,
           alignItems: 'center',
           justifyContent: 'center',
         },
-        style, // caller overrides (layout only) merge last
+        style, // caller overrides (layout only) merge before the press scale
+        scaleStyle,
       ]}>
       {loading ? (
         <ActivityIndicator color={v.fg} />
       ) : (
-        <AppText variant="button" style={{ color: disabled ? colors.onDisabled : v.fg }}>
+        <AppText
+          variant="button"
+          align="center"
+          maxFontSizeMultiplier={1.4}
+          style={{ color: disabled ? colors.onDisabled : v.fg }}>
           {title}
         </AppText>
       )}
-    </Pressable>
+    </AnimatedPressable>
   );
 }
