@@ -50,3 +50,5 @@ pnpm-debug.log*
 
 # Miscellaneous
 *.orig.*
+# temporary transfer folder used by Claude
+.sync-tmp/

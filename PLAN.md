@@ -261,3 +261,21 @@ Flow: "Finalizar" on "Tus respuestas" now marks the dimension complete and opens
 - **Screen readers.** A disabled "Enviar" explains why.
 - iOS and Android bundles both build.
 - **Not done:** the app icon is still Expo's. It waits for the hi-res NeuroMind artwork, because the PDF face is too small to scale up to 1024 px cleanly.
+
+**Account screens (UI only, Nov 17):** under `src/app/cuenta/`, with copy in `src/content/auth.ts`.
+- `iniciar-sesion`: correo, contraseña, "¿Olvidaste tu contraseña?", Iniciar sesión, Crear cuenta.
+- `registro`: nombre, correo, contraseña, confirmar.
+- `recuperar-contrasena`: correo, Enviar instrucciones.
+- `cambiar-contrasena`: actual, nueva, confirmar, Guardar / Cancelar.
+
+Shared pieces: `TextField` (label, Mostrar/Ocultar for passwords, autofill hints), `AuthLayout` (Atrás, logo, title) and `Screen keyboardAvoiding`. There's no validation and no server calls; the submit buttons do nothing yet.
+
+Entry points: "Iniciar sesión o crear cuenta" on the Mapa. "Cambiar contraseña" is temporarily in the testing tools, until an account settings screen exists.
+
+**Sign-in required (Nov 17):** the app opens on Iniciar sesión.
+- `index` routes: not signed in → `cuenta/iniciar-sesion`; signed in and first time → `bienvenida`; signed in and returning → `mapa`.
+- "Iniciar sesión" / "Crear cuenta" are still placeholders. They call `signIn()` in `src/data/session.ts`, which just stores a device flag with no validation, then reset history to the intro or the Mapa, so "back" can't return to sign-in.
+- The Mapa has "Cerrar sesión", which clears the flag and resets to sign-in. The sign-in screens have no "Atrás"; "Iniciar sesión o crear cuenta" was removed from the Mapa.
+- `useResetTo()` (`src/hooks/use-reset-to.ts`) is the shared helper for complete-state resets.
+- Answers stay per device for now, not per account. Signing out doesn't erase them.
+- When real auth arrives, swap the bodies of `signIn` / `signOut` / `isSignedIn` and keep the names.

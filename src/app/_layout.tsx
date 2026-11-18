@@ -36,7 +36,7 @@ const navigationTheme = {
  * - Question → question: a short fade. The layout stays put and only the
  *   question changes, so sliding the whole screen each time feels heavy.
  * - Pantallas 1–3: a short crossfade, so the intro reads as one continuous piece.
- * - Arriving at the Mapa: a short fade.
+ * - Arriving at the Mapa, or at the sign-in screens: a short fade.
  * - Mapa → a dimension: rises gently and fades in, like a card coming forward.
  * - Reduce Motion on: fades everywhere.
  * Fade durations only apply on iOS (Android uses its system fade timing).
@@ -77,6 +77,8 @@ export default function RootLayout() {
             animationDuration: FADE_MS,
           }}>
           <Stack.Screen name="index" options={{ animation: 'none' }} />
+          <Stack.Screen name="cuenta/iniciar-sesion" options={{ animation: 'fade', animationDuration: FADE_MS }} />
+          <Stack.Screen name="cuenta/registro" options={{ animation: 'fade', animationDuration: FADE_MS }} />
           <Stack.Screen name="bienvenida" options={{ animation: 'fade', animationDuration: FADE_MS }} />
           <Stack.Screen name="beneficios" options={{ animation: 'fade', animationDuration: FADE_MS }} />
           <Stack.Screen name="como-usar" options={{ animation: 'fade', animationDuration: FADE_MS }} />

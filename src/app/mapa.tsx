@@ -11,16 +11,20 @@ import { Screen } from '@/components/screen';
 import { WellbeingWheel } from '@/components/wellbeing-wheel';
 import { layout, spacing } from '@/constants/theme';
 import { dimensions, type DimensionId } from '@/content/dimensions';
+import { authCopy } from '@/content/auth';
 import { common, mapa as copy } from '@/content/onboarding';
 import { useCheckinAnswers } from '@/data/answers-store';
 import { nextCheckinDate } from '@/data/checkins';
+import { signOut } from '@/data/session';
 import { useDimensionProgress } from '@/hooks/use-dimension-progress';
+import { useResetTo } from '@/hooks/use-reset-to';
 
 export default function Mapa() {
   const router = useRouter();
   const { width } = useWindowDimensions();
   const progress = useDimensionProgress();
   const { checkin } = useCheckinAnswers();
+  const resetTo = useResetTo();
 
   const wheelSize = Math.min(width - layout.screenPadding * 2, 380);
 
@@ -55,6 +59,14 @@ export default function Mapa() {
       </View>
 
       <Button title={common.howItWorks} variant="ghost" onPress={() => router.push('/bienvenida')} />
+      <Button
+        title={authCopy.signOut}
+        variant="secondary"
+        onPress={() => {
+          signOut();
+          resetTo('cuenta/iniciar-sesion');
+        }}
+      />
 
       <DevTools />
     </Screen>

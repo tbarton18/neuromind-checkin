@@ -2,6 +2,7 @@ import { useNavigation, useRouter } from 'expo-router';
 import { useState } from 'react';
 
 import { hasCompletedOnboarding, markOnboardingCompleted } from '@/data/preferences';
+import { useResetTo } from '@/hooks/use-reset-to';
 
 export const ONBOARDING_STEPS = 3;
 
@@ -13,6 +14,7 @@ export const ONBOARDING_STEPS = 3;
 export function useOnboarding() {
   const router = useRouter();
   const navigation = useNavigation();
+  const resetTo = useResetTo();
   const [canSkip] = useState(hasCompletedOnboarding);
 
   function finish() {
@@ -23,15 +25,8 @@ export function useOnboarding() {
       router.dismissTo('/mapa'); // intro was opened from the Mapa: go back to it
       return;
     }
-    // First launch: make the Mapa the only screen in history. Expo Router needs
-    // a complete state for a reset (key, routeNames, routeKeySeq…), so we copy
-    // the current one and swap in the new route list; the key is minted for us.
-    navigation.reset({
-      ...state,
-      index: 0,
-      routes: [{ name: 'mapa' }],
-      stale: false,
-    } as unknown as Parameters<typeof navigation.reset>[0]);
+    // First launch: make the Mapa the only screen in history.
+    resetTo('mapa');
   }
 
   return { canSkip, finish, skip: canSkip ? finish : undefined };

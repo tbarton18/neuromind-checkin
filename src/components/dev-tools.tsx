@@ -43,9 +43,15 @@ export function DevTools() {
           router.replace('/');
         }}
       />
+      <Button
+        title="Cambiar contraseña"
+        variant="secondary"
+        onPress={() => router.push('/cuenta/cambiar-contrasena')}
+      />
       <AppText variant="caption">
         Solo visible en desarrollo. «Simular mes siguiente» adelanta 31 días: si el check-in actual está
-        completo, comienza uno nuevo; si no, continúa el mismo.
+        completo, comienza uno nuevo; si no, continúa el mismo. «Cambiar contraseña» es un acceso
+        temporal: más adelante estará en la configuración de la cuenta.
       </AppText>
     </Card>
   );
